@@ -1,9 +1,8 @@
 # Made By Shaheen <abdelazizshaheen162@gmail.com> For Python Workshop In Cic
-
+# Forked By Miran <mirantorky@gmail.com> For Python Workshop In Cic 
 import pygame
 import random
 import os
-
 # Initialize Pygame
 pygame.init()
 
@@ -13,14 +12,14 @@ WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Snake Game")
 
 # Colors
-BGCOLOR = (57, 0, 153)
+BGCOLOR = (128, 0, 128)
 TEXT_COLOR = (255, 255, 179)
-FOOD_COLOR = (220,171,107)
+FOOD_COLOR = (255,255,0)
 SNAKE_COLOR = (255, 0, 84)
 
 # Snake properties
 SNAKE_SIZE = 20
-SNAKE_SPEED = 20
+SNAKE_SPEED = 15
 SNAKE_BODY = [(WIDTH / 2, HEIGHT / 2)]
 SNAKE_DIRECTION = (1, 0)
 
@@ -59,7 +58,7 @@ def shake_screen():
     shake_intensity = 10
     shake_duration = 1  # in seconds
     start_time = pygame.time.get_ticks()
-
+    
     while pygame.time.get_ticks() - start_time < shake_duration * 1000:
         dx = random.randint(-shake_intensity, shake_intensity)
         dy = random.randint(-shake_intensity, shake_intensity)
@@ -84,7 +83,7 @@ while running:
                 SNAKE_DIRECTION = (-1, 0)
             elif event.key == pygame.K_RIGHT and SNAKE_DIRECTION != (-1, 0):
                 SNAKE_DIRECTION = (1, 0)
-
+    
     # Move the snake
     new_head = (SNAKE_BODY[0][0] + SNAKE_SPEED * SNAKE_DIRECTION[0],
                 SNAKE_BODY[0][1] + SNAKE_SPEED * SNAKE_DIRECTION[1])
@@ -98,17 +97,17 @@ while running:
         food_pos = (random.randint(0, WIDTH - FOOD_SIZE), random.randint(0, HEIGHT - FOOD_SIZE))
     else:
         SNAKE_BODY.pop()
-
+    
     # Check for collision with walls or itself
-    if (SNAKE_BODY[0][0] < 0 or SNAKE_BODY[0][0] >= WIDTH or
+    if  (SNAKE_BODY[0][0] < 0 or SNAKE_BODY[0][0] >= WIDTH or
         SNAKE_BODY[0][1] < 0 or SNAKE_BODY[0][1] >= HEIGHT or
         len(SNAKE_BODY) != len(set(SNAKE_BODY))):
         reset_game()
 
     # Draw everything
     WINDOW.fill(BGCOLOR)
-    pygame.draw.rect(WINDOW, FOOD_COLOR, (*food_pos, FOOD_SIZE, FOOD_SIZE))
-
+    pygame.draw.ellipse(WINDOW, FOOD_COLOR, (*food_pos, FOOD_SIZE, FOOD_SIZE))
+    
     for segment in SNAKE_BODY:
         pygame.draw.rect(WINDOW, SNAKE_COLOR, (*segment, SNAKE_SIZE, SNAKE_SIZE))
 
@@ -116,5 +115,4 @@ while running:
     display_highest_score()
     pygame.display.update()
     clock.tick(10)
-
 pygame.quit()
